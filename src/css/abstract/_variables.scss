@@ -1,0 +1,32 @@
+//Färger
+$primar_color: #424769;
+$second_color: #7077A1;
+
+$object_color: #F6B17A;
+
+//text
+$text_color:#f5f5f5;
+$headings_color:#3498db;
+
+//Bakgrund
+$backgrund_color:#2D3250;
+
+//Hover effekt
+$object_hover_color: lighten($second_color, 20%);
+
+//Färger
+$primar_color-lightm: #CDFADB;
+$second_color-lightm: #F6FDC3;
+
+$object_color-lightm: #FFCF96;
+
+//text
+$text_color-lightm:#000000;
+$headings_color-lightm:#3498db;
+
+//Bakgrund
+$backgrund_color-lightm:#FF8080;
+
+//Hover effekt
+$object_hover_color-lightm: darken($second_color-lightm, 20%);
+

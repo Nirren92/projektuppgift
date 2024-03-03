@@ -1,0 +1,34 @@
+//media breakpoints
+$breakpoints: (
+    'small': (max-width: 600px),
+    'medium': (max-width: 801px),
+    'large': (min-width: 1200px),
+);
+
+
+
+@mixin respond_to($breakpoint)
+{
+    $raw-query:map-get($breakpoints, $breakpoint );
+
+    @if $raw-query {
+        $query: if(
+            type-of($raw-query)=='string',
+            unquote($raw-query), 
+            inspect($raw-query)
+        );
+        @media #{$query}{
+            @content;
+        }
+
+    }
+    @else{
+        @error 'nåt gick fel vid `#{$breakpoint}`';
+
+    }
+
+
+}
+
+
+

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.scss"> 
+    <script  src="js/javascriptheader.js" type="module" ></script>
+    <script  src="js/animerings.js" type="module" ></script>
+
+
+    
+    <title>Document</title>
+</head>
+<body>
+
+    <header>
+
+   
+        <nav >
+
+            <picture id="menu_knappen" class="nav_button"  >
+                <source id="bilden_menu" srcset="img/menu.png?as=webp" type="image/webp" />
+                <img  src="img/cancel.png?width=100" alt="ikon för att öppna och stänga meny" />
+            </picture>
+
+
+            
+                   
+            <ul id="menu_innehall" >
+                <li><a href="index.html">Start</a></li>
+                <li><a href="sass.html">Sass</a></li>
+                <li><a href="animering.html">Animering</a></li>
+                <li><a href="chart.html">Charts</a></li>
+                <li><a href="maps.html">Maps</a></li>
+            </ul>
+
+
+        </nav>
+
+
+
+    </header>
+
+
+    <main>
+
+        <section class="ruta_bilder_text_animering">
+
+            
+                <h1>Animering</h1>
+                <div class="img_container">
+              
+                          
+                    <picture class="img_object">
+                        <source srcset="img/bild11.jpg?as=webp&width=400" type="image/webp" />
+                        <img src="img/bild11.jpg" alt="exempelbild" />
+                    </picture>
+
+                    <picture class="img_object">
+                        <source srcset="img/bild22.jpg?as=webp&width=400" type="image/webp" />
+                        <img src="img/bild22.jpg" alt="exempelbild" />
+                    </picture>
+
+                </div>
+
+                <Button class="animeringsknappar" id="animeringsknapp" >
+                    Starta spel
+                </Button>
+
+       
+
+
+
+        </section>
+
+
+    </main>
+    
+</body>
+</html>

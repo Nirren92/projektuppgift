@@ -1,0 +1,49 @@
+
+
+@keyframes forflyttaknapp {
+    0%
+    {
+        bottom: 0px;
+        transform: translate(0,0px);
+        
+    }
+
+
+    25%
+    {
+        width: 80px;
+        transform: translateY(-50%);
+    }
+
+    50%
+    {
+        transform: translateX(50%);
+    }
+
+    70%
+    {
+        transform: translateX(-50%);
+    }
+
+
+    100%
+    {
+        transform: translate(0,0);
+    }
+}
+
+
+
+@keyframes text_glow
+{
+    10%
+    {
+        text-shadow: none;
+    }
+
+    20%
+    {
+        text-shadow: 2px 2px 2px black;
+    }
+   
+}

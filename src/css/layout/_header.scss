@@ -1,0 +1,29 @@
+@use 'src/css/abstract/_variables.scss';
+
+
+header
+{
+    background-color: variables.$primar_color;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    
+}
+
+
+
+@media
+(prefers-color-scheme: light)
+{
+    header
+    {
+        background-color: variables.$primar_color-lightm;
+   
+    }
+    
+    
+
+
+}

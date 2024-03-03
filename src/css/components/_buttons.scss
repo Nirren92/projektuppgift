@@ -1,0 +1,30 @@
+@use 'src/css/components/_animation.scss';
+
+.animeringsknappar
+{
+
+    position: relative;
+    width: 150px;
+    height: fit-content;
+    background-color: aqua;
+    margin: auto;
+    font-size: 2vw;
+
+}
+
+
+.button_sok
+{
+    width: 100px;
+    height: 30px;
+    background-color:rgb(72, 134, 114) ;
+    margin: 20px;
+    border-radius: 20px;
+    color: white;
+
+    &:hover
+    {
+        background-color:rgb(152, 236, 208);
+        color: black;
+    }
+}

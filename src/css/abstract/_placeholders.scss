@@ -1,0 +1,292 @@
+@use 'src/css/abstract/_variables.scss';
+
+@import 'src/css/components/_mediaqueries.scss';
+@import 'src/css/abstract/_mixins.scss';
+
+body
+{
+    margin: 0;
+    background-color: variables.$backgrund_color;;
+}
+
+.container_ruta
+{
+
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: variables.$second_color;
+
+    max-width: 900px;
+    margin: auto;
+    margin-top: 150px;
+ 
+    border-radius: 20px;
+
+
+    @include  respond_to('medium'){
+
+        margin: 10%;
+
+    }
+
+    @include  respond_to('small'){
+
+        margin: 2%;
+
+    }
+
+    h1
+    {
+        background-color: variables.$primar_color;
+        color: variables.$headings_color;
+        width: 100%;
+        height: 100px;
+        margin: 0px;
+        
+        @include round_top_Corner($Top_radious:20px);
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        $font-size_H1: 5vw;
+        font-size: $font-size_H1;
+
+        @include  respond_to('medium'){
+            $font-size_H1: 8vw;
+            font-size: $font-size_H1;
+        }
+
+        @if $font-size_H1 > 5vw {
+            font-weight: bold;
+          } @else {
+            font-weight: normal;
+          }
+
+      
+    }
+
+    .img_container
+    {
+        margin: auto;
+        margin-top: 5%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        
+        justify-content: center;
+
+
+        .img_object
+        {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            
+            justify-content: center;
+            img
+            {
+                padding: 10px;
+                width: 90%; 
+                
+
+
+            }
+        }
+      
+       
+
+    }
+
+ 
+
+
+
+
+}
+
+
+
+.ruta_bilder_text
+{
+    @extend .container_ruta; 
+    
+    
+        max-width: 1500px;
+    
+
+
+    h2
+    {
+        width: 80%;
+        margin: auto;
+        font-size: 3vw;
+    }
+        
+    p
+    {
+        width: 80%;
+        margin: auto;
+        margin-top: 5%;
+        font-size: 2vw;
+        @include  respond_to('medium'){
+        
+            font-size:4vw ;
+
+        }            
+        
+    }
+
+    li
+    {
+
+
+        width: 80%;
+
+    }
+ 
+    
+    ul
+    {
+        margin: 0;
+        padding-left: 20%;
+    }
+
+
+
+}
+
+
+@media
+(prefers-color-scheme: light)
+{
+
+    .container_ruta
+        {
+
+            background-color: variables.$second_color-lightm;
+        
+            h1
+            {
+                background-color: variables.$primar_color-lightm;
+                color: variables.$headings_color-lightm;
+    
+            }
+       
+        
+        }
+
+
+        body
+        {
+            
+            background-color: variables.$backgrund_color-lightm;
+        }
+}
+
+
+
+.ruta_bilder_text_animering
+{
+    @extend .container_ruta; 
+    height: 600px;
+        
+
+    h1
+    {
+        animation: text_glow 3s ease-in-out infinite ;
+    }
+
+    .img_container
+    {
+        
+        
+
+        .img_object
+        {
+            
+            
+            img
+            {
+                transition: transform 0.5s ease-in;
+                
+                &:hover
+                {
+                    transform: scale(110%);
+                }
+
+
+            }
+        }
+      
+       
+
+    }
+
+
+
+
+}
+
+
+
+
+
+
+
+
+.ruta_bilder_text_chart
+{
+    @extend .ruta_bilder_text; 
+    
+    .chart
+    {
+        width: 90%;
+        margin: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-height: 600px;
+       
+    }
+    
+    h2{
+        text-align: center;
+        padding: 20px;
+    }
+
+   
+
+}
+
+
+
+.ruta_bilder_text_maps
+{
+    @extend .ruta_bilder_text; 
+    
+    h2{
+        text-align: center;
+        padding: 20px;
+    }
+
+   .inputdata
+   {
+    text-align: center;
+    margin-bottom: 50px;
+    height: 30px;
+    
+    
+   }
+
+
+   .mapss
+   { 
+    height: 180px;
+    width: 80%;    
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 100px;
+    }
+}

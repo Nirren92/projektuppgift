@@ -1,0 +1,154 @@
+@use 'src/css/abstract/_variables.scss';
+
+@import 'src/css/components/_mediaqueries.scss';
+
+
+    nav
+    {
+
+        width: 100%;
+
+        ul{
+
+            list-style: none;
+            margin: 0px;
+            padding: 0; 
+            display: flex;
+           align-items: center;
+           width: 100%;
+           
+            // gör om till menuknapp
+            @include respond_to('small'){
+                display: none;
+                z-index: 1;
+                position: absolute;
+                top:100px;
+                bottom: 0px;
+                background-color: variables.$second_color;
+                height:fit-content ;
+            }
+
+            li
+            {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                height: 100%;
+                width: 200px;
+                height: 100px;
+
+                // gör om till menuknapp
+                @include respond_to('small'){
+                    display: block;
+                    height: 100px;
+                    width: 100%;
+                }
+                
+            }
+
+            a
+            {
+                text-decoration: none;
+                
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                height: 100%;
+                color: variables.$text_color;
+                font-size: 30px;
+                font-weight: bold;
+                width: 100%;
+
+                
+                &:hover
+                {
+                    background-color: variables.$object_hover_color;
+                }
+            }
+            
+
+            .home_img 
+            {
+                
+                width: 12%;
+                padding: 2%;
+                
+            }
+            
+       
+        
+            
+
+
+        }
+    
+    
+        .nav_button{
+        
+        float: right;
+        margin-top: 2%;
+        margin-right: 2%;
+
+        display: none;
+
+        @include respond_to('small'){
+        display: unset;
+        }
+
+            img {
+                height: 50px;
+            
+            }
+        
+        }
+    }
+    
+    
+    @media
+    (prefers-color-scheme: light)
+    {
+
+        nav
+        {
+
+            
+    
+            ul{
+
+                
+                // gör om till menuknapp
+                @include respond_to('small'){
+
+                    
+                    background-color: variables.$second_color-lightm;
+                  
+                }
+    
+               
+    
+                a
+                {
+                
+                    color: variables.$text_color-lightm;
+                    
+                
+                    &:hover
+                    {
+                        background-color: variables.$object_hover_color-lightm;
+                    }
+                }
+                
+    
+                
+            
+                
+    
+    
+            }
+        
+        
+            
+        }
+    }
