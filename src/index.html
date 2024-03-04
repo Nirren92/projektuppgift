@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/main.scss"> 
     <script  src="js/javascriptheader.js" type="module" ></script>
+
+
+    <script  src="js/maps.js" type="module" ></script>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+
+
+
     <title>Document</title>
 </head>
 <body>
@@ -23,7 +36,7 @@
                   
             <ul id="menu_innehall" >
                 <li><a href="index.html">Start</a></li>
-                <li><a href="sass.html">Sass</a></li>
+                <li><a href="hotspot.html">Hotspot Priser Imorgon</a></li>
                 <li><a href="animering.html">Animering</a></li>
                 <li><a href="chart.html">Charts</a></li>
                 <li><a href="maps.html">Maps</a></li>
@@ -42,25 +55,19 @@
 
             
                 <h1>Start sida</h1>
-                <div class="img_container">
-              
-                          
-                    <picture class="img_object">
-                        <source srcset="img/bild11.jpg?as=webp&width=400" type="image/webp" />
-                        <img src="img/bild11.jpg" alt="exempelbild" />
-                    </picture>
+                
+                    <p>Sök och beräkna elpriser baserade på senaste Hotspotpriser</p>
+                    
+                    <form  action="position_input">
 
-                    <picture class="img_object">
-                        <source srcset="img/bild22.jpg?as=webp&width=400" type="image/webp" />
-                        <img src="img/bild22.jpg" alt="exempelbild" />
-                    </picture>
+                        <input type="text" name="test" id="position_input">
 
-                </div>
+                    </form>
 
-
+                    <button class="button_sok" id="sok_destination" >Sök</button>
 
        
-
+                <div class="mapss" id="map"></div>
 
 
         </section>
