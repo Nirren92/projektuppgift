@@ -98,7 +98,7 @@ async function init_map()
 async function search_destname(lat,lng)
 {
      //hämtar namn på den ny markerade platsen
-     let url_sok = "http://nominatim.openstreetmap.org/reverse?format=json&lat="+lat+"&lon="+lng;
+     let url_sok = "https://nominatim.openstreetmap.org/reverse?format=json&lat="+lat+"&lon="+lng;
      let gps_name= await get_data(url_sok);
      console.log("namn",gps_name.display_name);
      return(gps_name.display_name);
