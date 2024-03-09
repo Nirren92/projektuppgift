@@ -196,3 +196,5 @@ function inside_area(pointlng,pointlat) {
 
     return result; // Returnera det identifierade området
 }
+
+
