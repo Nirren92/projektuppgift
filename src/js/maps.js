@@ -6,16 +6,22 @@ import { booleanPointInPolygon } from '@turf/turf';
 
 document.addEventListener('DOMContentLoaded',init_map());
 
+let dest_seach = document.getElementById('sok_destination');
+dest_seach.addEventListener('click', search_dest);
+
+
+let hotspot = document.getElementById('show_hotspot');
+hotspot.addEventListener('click', go_to_hotspot);
+
 
 //https://nominatim.openstreetmap.org/search?q=sverige+Ludvika&format=geojson
 //konstanter
 const data_lank = "https://nominatim.openstreetmap.org/search?q";
 
-let dest_seach = document.getElementById('sok_destination');
-dest_seach.addEventListener('click', search_dest);
+
 let map;
 let marker;
-
+let valtelomrade = null;
 
 let res_omrade;
 
@@ -136,7 +142,7 @@ async function search_dest()
         
         res_omrade= inside_area(gps_kord.features[0].geometry.coordinates[0] ,gps_kord.features[0].geometry.coordinates[1]);
         create_marker(await search_destname(gps_kord.features[0].geometry.coordinates[1] ,gps_kord.features[0].geometry.coordinates[0])+", Elområde:"+res_omrade[0],gps_kord.features[0].geometry.coordinates[1] ,gps_kord.features[0].geometry.coordinates[0]);
-
+        
 
         console.log("dest",url_sok);
     }
@@ -177,7 +183,7 @@ async function get_data(url_IN)
 function inside_area(pointlng,pointlat) {
     //turf vill ha tvärtom lng och lat. 
     const coordinates = [pointlng, pointlat]; 
-    let result = null;
+   
 
     elomraden.features.forEach(omrade => {
         const polygonCoordinates = omrade.geometry.coordinates;
@@ -189,12 +195,17 @@ function inside_area(pointlng,pointlat) {
         if (booleanPointInPolygon(coordinates, polygonGeoJSON)) {
             // Returnera området som den markerade punkten är inuti
             console.log("succe"+omrade.properties.name);
-            result = [omrade.properties.name,omrade.properties.id];
+            valtelomrade = [omrade.properties.name,omrade.properties.id];
             
         }
     });
 
-    return result; // Returnera det identifierade området
+    
+    return valtelomrade; // Returnera det identifierade området
 }
 
 
+function go_to_hotspot()
+{
+    window.location.href = "chart.html?elomrade="+valtelomrade[1];
+}

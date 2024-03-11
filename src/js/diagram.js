@@ -1,23 +1,69 @@
 
-//konstanter och variabler
-const data_lank = 'https://studenter.miun.se/~mallar/dt211g/';
-const breaklineindex = 5;
-let antagningsdata=null;
+//https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=51.5&lon=0
 
-//DOM-event
+
+//konstanter och variabler
+
+const breaklineindex = 5;
+let label_time = [];
+let tempdata = [];
+let eldata = [];
+//DOM-event 
 window.onload =init_data();
 
 async function init_data()
 {
     try
-    {       
-        antagningsdata= await get_data(data_lank);
-        //skapar ett nytt objekt avorginaldata för att inte förstöra den. 
-        let course_sorted = sort_and_biggest_first(JSON.parse(JSON.stringify(antagningsdata)),'applicantsTotal','Kurs',6);
-        let program_sorted = sort_and_biggest_first(JSON.parse(JSON.stringify(antagningsdata)),'applicantsTotal','Program',5);
+    {    
         
-        chart_draw(course_sorted,'applicantsTotal','most_apply_course','Antal ansökande','bar');
-        chart_draw(program_sorted,'applicantsTotal','most_apply_program','Antal ansökande','pie');
+        //hämtar data från URL
+        let urlelomrade = new URLSearchParams(window.location.search).get('elomrade');
+        let smhidata = await get_data("https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=51.5&lon=0");
+       console.log("smhi",smhidata);
+
+       let temperatur_data = array_dataset_24hours(smhidata.properties.timeseries);
+       console.log("testar",temperatur_data);
+        //plockar ur unikadatum för att veta vad jag ska hämta för elpriser. om det skulle gå över fler eller två dagar
+        let unikadatum = [];
+       
+        temperatur_data.forEach(element => {
+            if(!unikadatum.includes(element.time.split("T")[0]))
+            {
+                unikadatum.push(element.time.split("T")[0]);
+            }
+            label_time.push(element.time.split("T")[1].slice(0, 5));
+            tempdata.push(element.data.instant.details.air_temperature);
+        });
+        
+        //hämtar eldata för de berörda datum
+        let all_eldata = [];
+        unikadatum.forEach(async element => {
+            let tempdatael = ( await get_data("https://www.elprisetjustnu.se/api/v1/prices/"+element.slice(0, 4)+"/"+element.slice(5, 10)+"_"+urlelomrade+".json"));
+            tempdatael.forEach(elementtempdatael => {
+                temperatur_data.forEach(elementtemperatur_data => {
+                    //jämför tidpunkter från temperatur för att matcha med eldata. 
+                    if(elementtempdatael.time_start.slice(0,15).includes(elementtemperatur_data.time.slice(0,15)))
+                    {
+                        console.log("fungerar");
+                        eldata.push(elementtempdatael.SEK_per_kWh)
+                    }
+                });
+                
+             
+            });
+
+            console.log("tidebn",element.time);
+        });
+
+        console.log("label_time",label_time);
+
+
+        
+        console.log("eldata",eldata);
+
+        chart_draw(eldata,tempdata,label_time);
+        
+        
     }
     //Fångar upp eventuella fel som kan uppstå vid hämtning av data. 
     catch(error)
@@ -25,6 +71,24 @@ async function init_data()
         console.error('nåt gick fel',error);
     }   
 }
+
+
+//tar dataarray
+function array_dataset_24hours(indata)
+{
+    let restemp = [];
+
+
+    for(let i=0; i<24 ;i++)
+    {
+        restemp.push(indata[i]);
+    }
+
+    return restemp;
+}
+
+
+
 
 //delar upp label i lämpligt format för att klara av långa label string
 function format_labels(input_array, size_string)
@@ -58,82 +122,52 @@ function format_labels(input_array, size_string)
 }
 
 // denna funktion ritar charts beroende på inputdata och 
-function chart_draw(input_array,filterord,canvasid,label_name,charttype)
+function chart_draw(hotspot_array,temp_array,labels)
 {
 
-   let array_name = format_labels(input_array,5);
-   const ctx = document.getElementById(canvasid);
-   let manuellval = 0;
-
-    //Sätter options beroende på vilen chart type
-    if(charttype=='bar')
-    {
-        manuellval = {
-            scales: {
-                x: {
-                    ticks: {
-                        color:'black',    
-                        font: {
-                            size: 8
-                        }
-                    }
-                },
-                y: {
-                    ticks: {
-                        color:'black', 
-                        font: {
-                            size: 18
-                        }
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    labels: {
-                        color:'black', 
-                        font: {
-                            size: 10
-                        }
-                    }
-                }
-            }
-        };
-    }
-
-    if(charttype=='pie')
-    {
-        manuellval = {
-            plugins: {
-                legend: {
-                    position: 'left',
-                    labels: {
-                        color:'black', 
-                        font: {
-                            size:12
-                        }
-                    }
-                }
-            },
-            legend: {               
-        }
-        };
-
-    }
     
-    //ritar karta(uppdaterar)
-    new Chart(ctx, {
-      type: charttype,
-      data: {
-        labels: array_name,
-        datasets: [{
-          label: label_name,
-          data: input_array.map(item => item[filterord]),
-          borderWidth: 1
-        }]
-      },
-      options:manuellval
-    });
+    const data = [
+        {
+            label:'Hotspot pris kr/kwh',
+            data: hotspot_array,
+            bordercolor:'red',
+            yAxisID: 'y1'
+        },
+        {
+            label:'Temperatur',
+            data: temp_array,
+            bordercolor:'blue',
+            yAxisID: 'y2'            
+        }
+    ];
+
+    const chart_config = {
+     type: 'line',
+        data: {
+            labels: labels,
+            datasets: data
+        },
+        options: {
+            // Ange önskade options här
+        }
+    };
+    
+    const canvas = document.getElementById('hotspot_chart');
+    const charten = new Chart(canvas,chart_config);
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
 
 // sorterar data i storleksordning baserat på det nyckelord som väljs i JSON string samt sorterat ut på ett valt ord
 function sort_and_biggest_first(input_array,filterord,type_input,antal)
@@ -150,3 +184,6 @@ async function get_data(url_IN)
         const data = await response.json();
         return data;
 }
+
+
+

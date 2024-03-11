@@ -1,0 +1,59 @@
+
+@import 'src/css/components/_mediaqueries.scss';
+
+
+
+
+form
+{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    width: 90%;    
+    justify-content: space-between;
+    @include  respond_to('small'){  justify-content:center;}
+    
+    .form_group
+    {
+      display: flex;
+      flex-direction: column;
+      
+      justify-content: center;
+      width: 200px;
+
+      input
+      {
+      
+          height: 30px;
+          width: calc(100% - 10px);
+          padding: 5px;
+          opacity: 50%;
+          border-radius: 10px;
+      }
+      
+      label
+      {
+          margin-bottom: 1px;
+          margin-left: 5px;
+          color: white
+      }
+
+
+
+
+
+
+
+    }
+    
+
+
+
+
+
+
+
+
+}
+
+

@@ -42,29 +42,59 @@
 
     <main>
 
-        <section class="ruta_bilder_text_chart">
+        <section class="container_ruta">
 
             
-                <h1>Start sida</h1>
+                <h1>24 timmars Hotspot</h1>
                 
                 <h2>Ansökande per kurs</h2>
                 <div class="chart">
               
-                    <canvas id="most_apply_course">
+                    <canvas id="hotspot_chart">
 
                     </canvas>
               
                 </div>
+
+             
+                    
+                    <form action="">
+                       
+                        <div class="form_group" >
+                            <label for="beteckning">Apparat</label>
+                            <input id="beteckning"  type="text" placeholder="Namn på apparat">
+                        </div>
+                        <div class="form_group" >
+                            <label for="forbrukning">Förbrukning</label>
+                            <input id="forbrukning" type="number" placeholder="förbrukning i kw">
+                        </div>
+                        <div class="form_group" >
+                            <label for="starttid" >Starttid</label>
+                            <input id="starttid" type="time">
+                        </div>
+                        <div class="form_group" >
+                            <label for="sluttid">Sluttid</label>
+                            <input id="sluttid" type="time">
+                        </div>
+                    </form>
                 
-                <h2>Ansökande per program</h2>
-                <div class="chart">
-              
-                    <canvas id="most_apply_program">
+                    
+                <button class="button_sok" >Lägg till </button>
+                    <table>
+                        <tr>
+                            <th>Benämning</th>
+                            <th>Förbrukning kw</th>
+                            <th>Aktiv tid</th>
+                        </tr>
+                        <tr>
+                            <td>Test</td>
+                            <td>Test</td>
+                        </tr>
 
-                    </canvas>
-              
-                </div>
+                    </table>
 
+                
+                
        
 
 
