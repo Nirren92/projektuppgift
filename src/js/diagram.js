@@ -18,7 +18,9 @@ async function init_data()
         
         //hämtar data från URL
         let urlelomrade = new URLSearchParams(window.location.search).get('elomrade');
-        let smhidata = await get_data("https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=51.5&lon=0");
+        let lat = new URLSearchParams(window.location.search).get('lat');
+        let lng = new URLSearchParams(window.location.search).get('lng');
+        let smhidata = await get_data("https://api.met.no/weatherapi/locationforecast/2.0/compact?lat="+lat+"&lon="+lng);
        console.log("smhi",smhidata);
 
        let temperatur_data = array_dataset_24hours(smhidata.properties.timeseries);

@@ -25,6 +25,10 @@ let valtelomrade = null;
 
 let res_omrade;
 
+
+let globallat;
+let globallng;
+
 const elomraden = {
     "type": "FeatureCollection",
     "features": [{
@@ -107,7 +111,9 @@ async function search_destname(lat,lng)
      let url_sok = "https://nominatim.openstreetmap.org/reverse?format=json&lat="+lat+"&lon="+lng;
      let gps_name= await get_data(url_sok);
      console.log("namn",gps_name.display_name);
-     return(gps_name.display_name);
+     globallng=lng;
+     globallat=lat;
+     return(gps_name.display_name);  
 }
 
 
@@ -207,5 +213,6 @@ function inside_area(pointlng,pointlat) {
 
 function go_to_hotspot()
 {
-    window.location.href = "chart.html?elomrade="+valtelomrade[1];
+    console.log("nu är det"+globallat);
+    window.location.href = "chart.html?elomrade="+valtelomrade[1]+"&lng="+globallng+"&lat="+globallat;
 }
