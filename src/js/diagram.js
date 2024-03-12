@@ -10,6 +10,8 @@ let tempdata = [];
 let eldata = [];
 let forbrukning =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 let temperatur_data =[];
+let charten;
+
 //DOM-event 
 window.onload =init_data();
 let btnlaggtill = document.getElementById('laggtill');
@@ -132,20 +134,32 @@ function format_labels(input_array, size_string)
 // denna funktion ritar charts beroende på inputdata och 
 function chart_draw(hotspot_array,temp_array,labels)
 {
-
+    //kollar om init har gått eller inte
+    if (charten) {
+        charten.destroy();
+    }
     
     const data = [
         {
             label:'Hotspot pris kr/kwh',
             data: hotspot_array,
             bordercolor:'red',
-            yAxisID: 'y1'
+            yAxisID: 'y1',
+            type:'line'
         },
         {
             label:'Temperatur',
             data: temp_array,
             bordercolor:'blue',
-            yAxisID: 'y2'            
+            yAxisID: 'y2',
+            type:'line'            
+        },
+        {
+            label:'Förbrukning',
+            data: forbrukning,
+            bordercolor:'purple',
+            yAxisID: 'y3',
+            type:'bar'            
         }
     ];
 
@@ -161,7 +175,7 @@ function chart_draw(hotspot_array,temp_array,labels)
     };
     
     const canvas = document.getElementById('hotspot_chart');
-    const charten = new Chart(canvas,chart_config);
+    charten = new Chart(canvas,chart_config);
 
 
 
@@ -200,15 +214,15 @@ async function get_data(url_IN)
 function laggtilltabell()
 {
     let beteckning = document.getElementById("beteckning").value;
-    let forbrukningkw = document.getElementById("forbrukning").value;
+    let forbrukningkw = parseFloat(document.getElementById("forbrukning").value);
     let starttid = document.getElementById("starttid").value;
-    let sluttid = document.getElementById("sluttid").value;
+    let timmaraktiv = parseFloat(document.getElementById("timmaraktiv").value);
     
     let newrow = document.createElement("tr");
     let newdata1 = document.createElement("td");
     let newdata2 = document.createElement("td");
     let newdata3 = document.createElement("td");
-
+    let newdata4 = document.createElement("td");
 
     newdata1.textContent = beteckning;
     newrow.appendChild(newdata1);
@@ -216,8 +230,12 @@ function laggtilltabell()
     newdata2.textContent = forbrukningkw;
     newrow.appendChild(newdata2);
 
-    newdata3.textContent = 2;
+    newdata3.textContent = starttid;
     newrow.appendChild(newdata3);
+
+
+    newdata4.textContent = timmaraktiv;
+    newrow.appendChild(newdata4);
 
     document.getElementById("tabellen").appendChild(newrow);
 
@@ -229,7 +247,12 @@ function laggtilltabell()
     label_time.forEach(element => {
         if(element.slice(0, 2).includes(starttid.slice(0,2)))
         {
-            forbrukning[i]=forbrukning[i]+parseFloat(forbrukningkw);
+            for(let k=0;k<timmaraktiv;k++)
+            {
+                forbrukning[i+k]=forbrukning[i+k]+parseFloat(forbrukningkw);
+            }
+            chart_draw(eldata,tempdata,label_time);
+            return;
         }
         i++;
     });
@@ -239,17 +262,6 @@ function laggtilltabell()
     console.log("fungerar!!!",forbrukning);
 
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
