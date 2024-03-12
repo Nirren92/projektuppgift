@@ -8,8 +8,14 @@ const breaklineindex = 5;
 let label_time = [];
 let tempdata = [];
 let eldata = [];
+let forbrukning =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+let temperatur_data =[];
 //DOM-event 
 window.onload =init_data();
+let btnlaggtill = document.getElementById('laggtill');
+btnlaggtill.addEventListener('click', laggtilltabell);
+
+
 
 async function init_data()
 {
@@ -23,7 +29,7 @@ async function init_data()
         let smhidata = await get_data("https://api.met.no/weatherapi/locationforecast/2.0/compact?lat="+lat+"&lon="+lng);
        console.log("smhi",smhidata);
 
-       let temperatur_data = array_dataset_24hours(smhidata.properties.timeseries);
+       temperatur_data = array_dataset_24hours(smhidata.properties.timeseries);
        console.log("testar",temperatur_data);
         //plockar ur unikadatum för att veta vad jag ska hämta för elpriser. om det skulle gå över fler eller två dagar
         let unikadatum = [];
@@ -186,6 +192,66 @@ async function get_data(url_IN)
         const data = await response.json();
         return data;
 }
+
+
+
+
+//lägger till input data till tabel. 
+function laggtilltabell()
+{
+    let beteckning = document.getElementById("beteckning").value;
+    let forbrukningkw = document.getElementById("forbrukning").value;
+    let starttid = document.getElementById("starttid").value;
+    let sluttid = document.getElementById("sluttid").value;
+    
+    let newrow = document.createElement("tr");
+    let newdata1 = document.createElement("td");
+    let newdata2 = document.createElement("td");
+    let newdata3 = document.createElement("td");
+
+
+    newdata1.textContent = beteckning;
+    newrow.appendChild(newdata1);
+
+    newdata2.textContent = forbrukningkw;
+    newrow.appendChild(newdata2);
+
+    newdata3.textContent = 2;
+    newrow.appendChild(newdata3);
+
+    document.getElementById("tabellen").appendChild(newrow);
+
+    //tar bort värden från fält. 
+    document.getElementById("form_apparat").reset();
+    console.log("fungerar!!!",tempdata);
+    let i = 0;
+    //beräknar förbrukning per timme
+    label_time.forEach(element => {
+        if(element.slice(0, 2).includes(starttid.slice(0,2)))
+        {
+            forbrukning[i]=forbrukning[i]+parseFloat(forbrukningkw);
+        }
+        i++;
+    });
+
+    
+    
+    console.log("fungerar!!!",forbrukning);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
