@@ -1,5 +1,6 @@
 @use 'src/css/abstract/_variables.scss';
 
+@import 'src/css/components/_mediaqueries.scss';
 
 header
 {
@@ -10,6 +11,25 @@ header
     justify-content: center;
     width: 100%;
     
+
+    h1
+    {
+        width: 100%;
+        text-transform: uppercase;
+        color: white;
+        margin-top: 0;
+        -webkit-box-reflect: below 0.01rem
+        linear-gradient(transparent, #0004);
+       
+        @include  respond_to('small'){
+            margin: auto;
+            -webkit-box-reflect: unset;}
+
+        text-shadow: 0 0 10px;
+        animation: text_glow 2s ease-in-out infinite;
+        padding-left: 10%;
+        @include  respond_to('medium'){padding-left: 5%; }
+    }
 }
 
 

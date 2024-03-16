@@ -1,31 +1,14 @@
 
 
-@keyframes forflyttaknapp {
+@keyframes hotspot {
     0%
     {
-        bottom: 0px;
-        transform: translate(0,0px);
+
         
     }
 
 
-    25%
-    {
-        width: 80px;
-        transform: translateY(-50%);
-    }
-
-    50%
-    {
-        transform: translateX(50%);
-    }
-
-    70%
-    {
-        transform: translateX(-50%);
-    }
-
-
+    
     100%
     {
         transform: translate(0,0);

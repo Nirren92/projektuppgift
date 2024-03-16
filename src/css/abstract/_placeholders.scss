@@ -68,6 +68,19 @@ body
 
 }
 
+
+
+
+.container_ruta_diagram
+{
+   @extend  .container_ruta;   
+    p
+    {
+        color: variables.$text_color;
+        text-align: center;
+    }
+}
+
     .mapss
     { 
     height: 380px;
@@ -79,23 +92,6 @@ body
     }
 
 // fixa denna sedan
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
