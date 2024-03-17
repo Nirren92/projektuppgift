@@ -1,34 +1,22 @@
-
-//DOM-event
-
 import { booleanPointInPolygon } from '@turf/turf';
 
-
+//DOM-event
 document.addEventListener('DOMContentLoaded',init_map());
-
 let dest_seach = document.getElementById('sok_destination');
 dest_seach.addEventListener('click', search_dest);
-
-
 let hotspot = document.getElementById('show_hotspot');
 hotspot.addEventListener('click', go_to_hotspot);
 
 
-//https://nominatim.openstreetmap.org/search?q=sverige+Ludvika&format=geojson
+
+
 //konstanter
-const data_lank = "https://nominatim.openstreetmap.org/search?q";
-
-
 let map;
 let marker;
 let valtelomrade = null;
-
-let res_omrade;
-
-
 let globallat;
 let globallng;
-
+//elområden
 const elomraden = {
     "type": "FeatureCollection",
     "features": [{
@@ -83,19 +71,19 @@ async function init_map()
 {
     try
     {
+        //har gjort så att man ska enkelt kunna ändra startpunkt genom att byta ut sökord i API nedan. 
         let url_sok = "https://nominatim.openstreetmap.org/search?q="+"sweden"+"&format=geojson";
         let gps_kord= await get_data(url_sok);
         drawmap([gps_kord.features[0].geometry.coordinates[1] ,gps_kord.features[0].geometry.coordinates[0]],"sweden",4);
        
-        //Lägger till ett event för att kunna fånga upp kordinater från användares intergation. dvs att en användaresklick väljer område
+        //Lägger till ett event för att kunna fånga upp kordinater från användares intergation på kartan
         map.on('click', async function(e) {
             var clickkordinates = map.mouseEventToLatLng(e.originalEvent);      
-            //lägg till ifall man trycker utanför områden     
-            res_omrade= inside_area(clickkordinates.lng,clickkordinates.lat,);
-            create_marker(await search_destname(clickkordinates.lat,clickkordinates.lng)+", Elområde:"+res_omrade[0],clickkordinates.lat,clickkordinates.lng);
-            
+            let res_omrade= inside_area(clickkordinates.lng,clickkordinates.lat,);
+            create_marker(await search_destname(clickkordinates.lat,clickkordinates.lng)+", Elområde:"+res_omrade[0],clickkordinates.lat,clickkordinates.lng); 
+            globallng=clickkordinates.lng;
+            globallat=clickkordinates.lat;
         });
-
     }
     //Fångar upp eventuella fel som kan uppstå vid hämtning av data. 
     catch(error)
@@ -104,15 +92,13 @@ async function init_map()
     }
 }
 
-//söker namnet med mer information. 
+//söker namnet på kordinater. 
 async function search_destname(lat,lng)
 {
      //hämtar namn på den ny markerade platsen
      let url_sok = "https://nominatim.openstreetmap.org/reverse?format=json&lat="+lat+"&lon="+lng;
      let gps_name= await get_data(url_sok);
-     console.log("namn",gps_name.display_name);
-     globallng=lng;
-     globallat=lat;
+    
      return(gps_name.display_name);  
 }
 
@@ -120,7 +106,7 @@ async function search_destname(lat,lng)
 //skapar en markör på kartan
 async function create_marker(text_marker,lat ,lng)
 {
-    //denna borde jag kunna ta bort nedan. måste just nu hantera första trycket då det inte finns en gammal att ta bort. 
+    //måste just nu hantera första trycket då det inte finns en gammal att ta bort. 
     if(marker!= null)
     {
         map.removeLayer(marker);
@@ -130,30 +116,23 @@ async function create_marker(text_marker,lat ,lng)
      .openPopup();
 }
 
-
+//användare söker via knapp och input text
 async function search_dest()
 {
     try
     {
         let inputdata = document.getElementById('position_input').value;
         let dest = inputdata;
-
         //förbereder sökorden för API
         dest.replace(" ","+")
         let url_sok = "https://nominatim.openstreetmap.org/search?q="+dest+"&format=geojson";
-
         let gps_kord= await get_data(url_sok);
-
         drawmap([gps_kord.features[0].geometry.coordinates[1] ,gps_kord.features[0].geometry.coordinates[0]],inputdata,13);
-        
-        res_omrade= inside_area(gps_kord.features[0].geometry.coordinates[0] ,gps_kord.features[0].geometry.coordinates[1]);
+        let res_omrade= inside_area(gps_kord.features[0].geometry.coordinates[0] ,gps_kord.features[0].geometry.coordinates[1]);
         create_marker(await search_destname(gps_kord.features[0].geometry.coordinates[1] ,gps_kord.features[0].geometry.coordinates[0])+", Elområde:"+res_omrade[0],gps_kord.features[0].geometry.coordinates[1] ,gps_kord.features[0].geometry.coordinates[0]);
-        
-
-        console.log("dest",url_sok);
+        globallng=gps_kord.features[0].geometry.coordinates[0];
+        globallat=gps_kord.features[0].geometry.coordinates[1];
     }
-
-    //Fångar upp eventuella fel som kan uppstå vid hämtning av data. 
     catch(error)
     {
         console.error('nåt gick fel',error);
@@ -165,16 +144,12 @@ async function search_dest()
 //Ritar karta via chart.js
 function drawmap(kordinater,sokdata,zoomlevel)
 {
-  
     map = L.DomUtil.get('map');
     if(map != null){
         map._leaflet_id = null;
     }
-
     map = L.map('map').setView(kordinater, zoomlevel);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
- 
-        
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);        
 }
 
 //hämtar data asynkront baserat på input url
@@ -190,29 +165,37 @@ function inside_area(pointlng,pointlat) {
     //turf vill ha tvärtom lng och lat. 
     const coordinates = [pointlng, pointlat]; 
    
-
+    //Går igenom alla områden och kontrollerar om punkten är innanför
     elomraden.features.forEach(omrade => {
-        const polygonCoordinates = omrade.geometry.coordinates;
-        const polygonGeoJSON = {
-            "type": "MultiPolygon",
-            "coordinates": polygonCoordinates
-        };
-
-        if (booleanPointInPolygon(coordinates, polygonGeoJSON)) {
+        if (booleanPointInPolygon(coordinates,  omrade.geometry)) {
             // Returnera området som den markerade punkten är inuti
-            console.log("succe"+omrade.properties.name);
             valtelomrade = [omrade.properties.name,omrade.properties.id];
+
+            //när ett område är hittat tillåter vi användaren att gå vidare visar knappen för dem. 
+            let sokknapp= document.getElementById("show_hotspot");
+            sokknapp.classList.add("visible")
             
+            sokknapp.addEventListener("transitionend",function(){
+                //aktiverar nästa animering
+                console.log("transisiition klar");
+                sokknapp.classList.add("pulse")
+            });
+
         }
     });
 
+    if(valtelomrade==null)
+    {
+        alert("Du måste välja inom sverige");
+    }
     
-    return valtelomrade; // Returnera det identifierade området
+    return valtelomrade;
 }
 
-
+//innan vi skickar vidare till nästa sida sätter vi in data i URL. 
 function go_to_hotspot()
 {
-    console.log("nu är det"+globallat);
-    window.location.href = "chart.html?elomrade="+valtelomrade[1]+"&lng="+globallng+"&lat="+globallat;
+    if((valtelomrade[1]!=null) && globallng!=null && globallat!=null){
+        window.location.href = "chart.html?elomrade="+valtelomrade[1]+"&lng="+globallng+"&lat="+globallat;
+    }
 }

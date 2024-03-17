@@ -30,3 +30,38 @@
     }
    
 }
+
+@keyframes box_glow
+{
+    10%
+    {
+        box-shadow: none;
+    }
+
+    20%
+    {
+        box-shadow: 2px 2px 2px rgb(216, 79, 79);
+    }
+   
+}
+
+
+
+
+@keyframes pulse
+{
+    0%
+    {
+        transform: scale(1);
+    }
+    50%
+    {
+        transform: scale(0.95);
+    }
+
+    100%
+    {
+        transform: scale(1);
+    }
+
+}

@@ -19,12 +19,31 @@
 .tillhotspot
 {
     width: 150px;
-    height: 40px;
+    height: 100px;
     background-color:rgb(72, 134, 114) ;
     margin: 20px;
     border-radius: 20px;
     color: white;
 
+    visibility: hidden;
+    opacity: 0;
+    transform: scale(0);
+    transition: opcacity 2s,transform 2s;
+   font-size: 12px;
+
+    &.visible
+    {
+        visibility: visible;
+        opacity: 1;
+        transform: scale(1);
+       
+    }
+
+    &.pulse
+    {
+        animation: pulse 2s infinite;
+    }
+    
     cursor: pointer;
     &:hover
     {
