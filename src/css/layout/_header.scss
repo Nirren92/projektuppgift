@@ -24,11 +24,10 @@ header
         @include  respond_to('small'){
             margin: auto;
             -webkit-box-reflect: unset;}
-
-        text-shadow: 0 0 10px;
-        animation: text_glow 2s ease-in-out infinite;
-        padding-left: 10%;
-        @include  respond_to('medium'){padding-left: 5%; }
+            text-shadow: 0 0 10px;
+            padding-left: 10%;
+            @include  respond_to('medium'){padding-left: 5%; }
+            animation: text_glow 2s ease-in-out infinite;
     }
 }
 
